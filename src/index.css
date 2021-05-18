@@ -1,6 +1,11 @@
 body {
-  font-family: sans-serif;
+  background: radial-gradient(circle, rgba(238,174,202,1) 20%, rgba(148,187,233,1) 100%);
+  font-family: 'Courier New', Courier, monospace;
   margin: 0;
   padding: 0;
-  background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+}
+
+
+button {
+  cursor: pointer;
 }
