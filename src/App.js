@@ -43,8 +43,28 @@ class App extends Component {
     super();
     this.state = {
       input: '',
-      imageUrl: ''
+      imageUrl: '',
+      box: {},
     }
+  }
+
+  calculateFaceLocation = (data) => {
+    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+    // getting pic info in order to calculate below
+    const image = document.getElementById('inputimage');
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      leftCol: clarifaiFace.left_col * width, // since we receive the percentage from data face, mult by our width 
+      topRow: clarifaiFace.top_row * height,
+      rightCol: width - (clarifaiFace.right_col * width),
+      bottomRow: height - (clarifaiFace.bottom_row * height)
+    }
+  }
+
+  displayFaceBox = (box) => {
+    console.log(box);
+    this.setState({box});
   }
 
   onInputChange = (e) => {
@@ -53,19 +73,13 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input});
-    console.log("click");
     app.models
       .predict(
     Clarifai.FACE_DETECT_MODEL,
     // THE JPG
-    "https://i.insider.com/5d321d4ea209d3146d650b4a?width=1100&format=jpeg&auto=webp"
-  )
-    .then((response) => {
-      console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    this.state.input)
+      .then(response => this.displayFaceBox(this.calculateFaceLocation(response)))
+      .catch(err => console.log(err));
  };    
 
   render() {
@@ -80,7 +94,7 @@ class App extends Component {
           onInputChange={this.onInputChange}
           onButtonSubmit={this.onButtonSubmit}
         />
-        <FaceRecognition imageUrl = {this.state.imageUrl}/>
+        <FaceRecognition box={this.state.box} imageUrl = {this.state.imageUrl}/>
       </div>
     );
   }
