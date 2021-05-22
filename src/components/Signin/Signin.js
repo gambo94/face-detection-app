@@ -5,7 +5,7 @@ class Signin  extends React.Component {
         super(props);
         this.state = {
             signInEmail: '',
-            signInPassword: ''
+            signInPassword: '',
         }
     }
 
@@ -30,6 +30,8 @@ class Signin  extends React.Component {
                 if (user.id){
                     this.props.loadUser(user);
                     this.props.onRouteChange('home');
+                } else {
+                    this.setState({errorMessage: 'invalid credentials'})
                 }
             })
     }

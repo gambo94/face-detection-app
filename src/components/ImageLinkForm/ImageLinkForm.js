@@ -22,6 +22,9 @@ const ImageLinkForm = ({ onInputChange, onButtonSubmit }) => {
                         >Detect</button>
                 </div>
             </div>
+            <p className="f4">
+                {'Give it a try with this link or paste your own: https://bit.ly/3oD4Kg5'}
+            </p>
         </div>
     );
 }
